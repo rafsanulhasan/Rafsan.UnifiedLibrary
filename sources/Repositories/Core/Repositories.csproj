@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0;net7.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+		<RootNamespace>Rafsan.DataAccess.Repositories</RootNamespace>
+		<PackageId>Rafsan.DataAccess.Repositories</PackageId>
+		<Title>Rafsan.DataAccess.Repositories</Title>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>Rafsanul Hasan (@rafsanulhasan)</Authors>
+		<Company>Symbiosis ICT Solutions</Company>
+		<PackageProjectUrl>https://github.com/rafsanulhasan/Rafsan.DataAccess.Repositories</PackageProjectUrl>
+		<Description>A simple package with a base Specification and UnitOfWork class, for use in creating queries that work with Repository types and performing transactional writes.</Description>
+		<Summary>A simple package with a base Specification and UnitOfWork class, for use in creating queries that work with Repository types and performing transactional writes.</Summary>
+		<RepositoryUrl>https://github.com/rafsanulhasan/rafsan.DataAccess</RepositoryUrl>
+		<PackageTags>spec;specification;uow;unit of work;repository;ddd</PackageTags>
+		<Version>7.0.0</Version>
+		<PackageReleaseNotes>
+			* Patch 2 by @davidhenley in https://github.com/ardalis/Specification/pull/283
+			* Fix `Just the Docs` link in docs home page by @snowfrogdev in https://github.com/ardalis/Specification/pull/293
+			* Update url path by @ta1H3n in https://github.com/ardalis/Specification/pull/303
+			* Implement SelectMany support by @amdavie in https://github.com/ardalis/Specification/pull/320
+			* Add two methods for consuming repositories in scenarios where repositories could be longer lived (e.g. Blazor component Injections) by @jasonsummers in https://github.com/rafsanulhasan/Specification/pull/289
+			* Added support for AsAsyncEnumerable by @nkz-soft in https://github.com/ardalis/Specification/pull/316
+			* Lamadelrae/doc faq ef versions by @Lamadelrae in https://github.com/ardalis/Specification/pull/324
+			* Updated projects, drop support for old TFMs. by @fiseni in https://github.com/ardalis/Specification/pull/326
+			* Update the search feature to generate parameterized query. by @fiseni in https://github.com/ardalis/Specification/pull/327
+			* Add support for extending default evaluator list by @fiseni in https://github.com/ardalis/Specification/pull/328
+			* Ardalis/cleanup by @ardalis in https://github.com/ardalis/Specification/pull/332
+		</PackageReleaseNotes>
+		<PackageIcon>icon.png</PackageIcon>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="LanguageExt.Core" Version="4.4.3" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Abstractions\Repositories.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="icon.png" Pack="true" Visible="false" PackagePath="" />
+	</ItemGroup>
+</Project>

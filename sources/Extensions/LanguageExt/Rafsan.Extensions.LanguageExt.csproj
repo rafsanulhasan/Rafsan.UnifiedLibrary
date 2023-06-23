@@ -1,0 +1,99 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0;net7.0;netstandard2.1;netstandard2.0</TargetFrameworks>
+		<RootNamespace>LanguageExt</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="LanguageExt.Core" Version="4.4.3" PrivateAssets="All" />
+		<PackageReference Include="LanguageExt.Parsec" Version="4.4.3" />
+		<PackageReference Include="LanguageExt.Transformers" Version="4.4.3" />
+		<PackageReference Include="OneOf" Version="3.0.243" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<Compile Remove="Conditional.*.cs" />
+		<Compile Remove="Guard.*.cs" />
+		<Compile Remove="Common\OptionalResultHelper.*.cs" />
+		<Compile Remove="Common\ResultHelper.*.cs" />
+		<Content Include="Conditional.*.cs">
+			<DependentUpon>Conditional.cs</DependentUpon>
+		</Content>
+		<Content Include="Guard.*.cs">
+			<DependentUpon>Guard.cs</DependentUpon>
+		</Content>
+		<Content Include="Common\OptionalResultHelper.*.cs">
+			<DependentUpon>Common\OptionalResultHelper.cs</DependentUpon>
+		</Content>
+		<Content Include="Common\ResultHelper.*.cs">
+			<DependentUpon>Common\ResultHelper.cs</DependentUpon>
+		</Content>
+	</ItemGroup>
+	
+	<ItemGroup Condition="'$(NetUnified)'=='true'">
+		<Compile Remove="Conditional.std*.cs" />
+		<Compile Remove="Guard.std*.cs" />
+		<Compile Remove="Common\OptionalResultHelper.std*.cs" />
+		<Compile Remove="Common\ResultHelper.std*.cs" />
+		<Compile Include="Conditional.net.cs">
+			<DependentUpon>Conditional.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Guard.net.cs">
+			<DependentUpon>Guard.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Common\OptionalResultHelper.net.cs">
+			<DependentUpon>Common\OptionalResultHelper.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Common\ResultHelper.net.cs">
+			<DependentUpon>Common\ResultHelper.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Std21)'=='true'">
+		<Compile Remove="Conditional.net.cs" />
+		<Compile Remove="Conditional.std20.cs" />
+		<Compile Remove="Guard.net.cs" />
+		<Compile Remove="Guard.std20.cs" />
+		<Compile Remove="Common\OptionalResultHelper.net.cs" />
+		<Compile Remove="Common\OptionalResultHelper.std20.cs" />
+		<Compile Remove="Common\ResultHelper.net.cs" />
+		<Compile Remove="Common\ResultHelper.std20.cs" />
+		<Compile Include="Conditional.std21.cs">
+			<DependentUpon>Conditional.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Guard.std21.cs">
+			<DependentUpon>Guard.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Common\OptionalResultHelper.std21.cs">
+			<DependentUpon>Common\OptionalResultHelper.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Common\ResultHelper.std21.cs">
+			<DependentUpon>Common\ResultHelper.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Std20)'=='true'">
+		<Compile Remove="Conditional.net.cs" />
+		<Compile Remove="Conditional.std21.cs" />
+		<Compile Remove="Guard.net.cs" />
+		<Compile Remove="Guard.std21.cs" />
+		<Compile Remove="Common\OptionalResultHelper.net.cs" />
+		<Compile Remove="Common\OptionalResultHelper.std21.cs" />
+		<Compile Remove="Common\ResultHelper.net.cs" />
+		<Compile Remove="Common\ResultHelper.std21.cs" />
+		<Compile Include="Conditional.std20.cs">
+			<DependentUpon>Conditional.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Guard.std20.cs">
+			<DependentUpon>Guard.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Common\OptionalResultHelper.std20.cs">
+			<DependentUpon>Common\OptionalResultHelper.cs</DependentUpon>
+		</Compile>
+		<Compile Include="Common\ResultHelper.std20.cs">
+			<DependentUpon>Common\ResultHelper.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

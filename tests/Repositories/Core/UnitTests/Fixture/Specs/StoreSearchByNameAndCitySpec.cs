@@ -1,0 +1,16 @@
+﻿using Ardalis.Specification.UnitTests.Fixture.Entities;
+
+using Rafsan.DataAccess.Repositories;
+using Rafsan.DataAccess.Repositories.Builder;
+
+namespace Ardalis.Specification.UnitTests.Fixture.Specs
+{
+	public class StoreSearchByNameAndCitySpec : Specification<Store>
+  {
+    public StoreSearchByNameAndCitySpec(string searchTerm)
+    {
+      Query.Search(x => x.Name!, "%" + searchTerm + "%", 1)
+          .Search(x => x.City!, "%" + searchTerm + "%", 2);
+    }
+  }
+}

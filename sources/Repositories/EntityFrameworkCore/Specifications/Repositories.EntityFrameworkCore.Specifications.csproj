@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net7.0;net6.0;net5.0;netstandard2.1;</TargetFrameworks>
+		<RootNamespace>Rafsan.DataAcccess.Repositories.Specifications.EntityFrameworkCore</RootNamespace>
+		<AssemblyName>$(RootNamespace)</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="*.net7.cs" />
+		<Content Include="RepositoryBaseOfT.*.cs">
+			<DependentUpon>RepositoryBaseOfT.cs</DependentUpon>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Net7)'=='true'">
+		<Compile Include="RepositoryBaseOfT.net7.cs">
+			<DependentUpon>RepositoryBaseOfT.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Extensions\LanguageExt\Rafsan.Extensions.LanguageExt.csproj" />
+	  <ProjectReference Include="..\..\Specifications\Core\Specifications.csproj" />
+	  <ProjectReference Include="..\Core\Repositories.EntityFrameworkCore.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0;net7.0;netstandard2.1;netstandard2.0;</TargetFrameworks>
+		<RootNamespace>Rafsan.DataAccess.Repositories.Abstractions</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="IReadRepository.cs" />
+		<Compile Remove="IReadRepository.*.cs" />
+		<Content Include="IReadRepository.cs" />
+		<Content Include="IReadRepository.*.cs">
+			<DependentUpon>IReadRepository.cs</DependentUpon>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(NetUnified)'=='true' Or '$(Std21)'=='true'">
+		<Compile Include="IReadRepository.cs" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Net7)'=='true'">
+		<Compile Remove="IReadRepository.std20.cs" />
+		<Compile Include="IReadRepository.net7.cs">
+			<DependentUpon>IReadRepository.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Std20)'=='true'">
+		<Compile Remove="IReadRepository.cs" />
+		<Compile Remove="IReadRepository.net7.cs" />
+		<Compile Include="IReadRepository.std20.cs">
+			<DependentUpon>IReadRepository.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Extensions\LanguageExt\Rafsan.Extensions.LanguageExt.csproj" />
+	  <ProjectReference Include="..\..\Abstractions\Repositories.Abstractions.csproj" />
+	  <ProjectReference Include="..\..\Core\Repositories.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="Rafsan.DataAccess.Repositories.Specifications" />
+	</ItemGroup>
+
+</Project>

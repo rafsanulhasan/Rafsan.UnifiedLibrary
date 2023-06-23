@@ -1,0 +1,142 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0;net7.0;netstandard2.1;</TargetFrameworks>
+		<RootNamespace>Rafsan.DataAccess.Repositories.EntityFrameworkCore</RootNamespace>
+		<PackageId>Rafsan.DataAccess.Repositories.EntityFrameworkCore</PackageId>
+		<Title>Rafsan.DataAccess.Repositories.EntityFrameworkCore</Title>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>Steve Smith (@ardalis); Fati Iseni (@fiseni); Scott DePouw</Authors>
+		<Company>Ardalis.com</Company>
+		<PackageProjectUrl>https://github.com/ardalis/specification</PackageProjectUrl>
+		<Description>EF Core plugin package to Ardalis.Specification containing EF Core evaluator and abstract repository.</Description>
+		<Summary>EF Core plugin package to Ardalis.Specification containing EF Core evaluator and abstract repository.</Summary>
+		<RepositoryUrl>https://github.com/ardalis/specification</RepositoryUrl>
+		<PackageTags>spec;specification;repository;ddd;ef;ef core;entity framework;entity framework core</PackageTags>
+		<Version>7.0.0</Version>
+		<PackageReleaseNotes>
+			* Patch 2 by @davidhenley in https://github.com/ardalis/Specification/pull/283
+			* Fix `Just the Docs` link in docs home page by @snowfrogdev in https://github.com/ardalis/Specification/pull/293
+			* Update url path by @ta1H3n in https://github.com/ardalis/Specification/pull/303
+			* Implement SelectMany support by @amdavie in https://github.com/ardalis/Specification/pull/320
+			* Add two methods for consuming repositories in scenarios where repositories could be longer lived (e.g. Blazor component Injections) by @jasonsummers in https://github.com/ardalis/Specification/pull/289
+			* Added support for AsAsyncEnumerable by @nkz-soft in https://github.com/ardalis/Specification/pull/316
+			* Lamadelrae/doc faq ef versions by @Lamadelrae in https://github.com/ardalis/Specification/pull/324
+			* Updated projects, drop support for old TFMs. by @fiseni in https://github.com/ardalis/Specification/pull/326
+			* Update the search feature to generate parameterized query. by @fiseni in https://github.com/ardalis/Specification/pull/327
+			* Add support for extending default evaluator list by @fiseni in https://github.com/ardalis/Specification/pull/328
+			* Ardalis/cleanup by @ardalis in https://github.com/ardalis/Specification/pull/332
+		</PackageReleaseNotes>
+		<PackageIcon>icon.png</PackageIcon>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="icon.png" Pack="true" Visible="false" PackagePath="" />
+		<Compile Remove="*.lts.cs" />
+		<Compile Remove="*.net*.cs" />
+		<Compile Remove="*.std*.cs" />
+		<Compile Remove="RepositoryBaseOfT.cs" />
+		<Content Include="RepositoryBaseOfT.cs" />
+		<Content Include="IRepositoryFactory.cs" />
+		<Content Include="EFRepositoryFactory.cs" />
+		<Content Include="IRepositoryFactory.*.cs">
+			<DependentUpon>IRepositoryFactory.cs</DependentUpon>
+		</Content>
+		<Content Include="EFRepositoryFactory.*.cs">
+			<DependentUpon>EFRepositoryFactory.cs</DependentUpon>
+		</Content>
+		<Content Include="RepositoryBaseOfT.*.cs">
+			<DependentUpon>RepositoryBaseOfT.cs</DependentUpon>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Net5)'=='true' Or '$(Std21)'=='true'">
+		<Compile Remove="*.net*.cs" />
+		<Compile Remove="*.std*.cs" />
+		<Compile Include="IRepositoryFactory.net5.cs" Condition="'$(Net5)'=='true'">
+			<DependentUpon>IRepositoryFactory.cs</DependentUpon>
+		</Compile>
+		<Compile Include="IRepositoryFactory.std21.cs" Condition="'$(Std21)'=='True'">
+			<DependentUpon>IRepositoryFactory.cs</DependentUpon>
+		</Compile>
+		<Compile Include="EFRepositoryFactory.net5.cs" Condition="'$(Net5)'=='true'">
+			<DependentUpon>EFRepositoryFactory.cs</DependentUpon>
+		</Compile>
+		<Compile Include="EFRepositoryFactory.std21.cs" Condition="'$(Std21)'=='true'">
+			<DependentUpon>EFRepositoryFactory.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(NetLTS)'=='true'">
+		<Compile Remove="*.lts.cs" />
+		<Compile Include="IRepositoryFactory.lts.cs">
+			<DependentUpon>IRepositoryFactory.cs</DependentUpon>
+		</Compile>
+		<Compile Include="EFRepositoryFactory.lts.cs">
+			<DependentUpon>EFRepositoryFactory.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(NetUnified)'=='true'">
+		<Compile Remove="RepositoryBaseOfT.net7.cs" />
+		<Compile Remove="RepositoryBaseOfT.std*.cs" />
+		<Compile Include="RepositoryBaseOfT.cs" />
+		<Compile Include="RepositoryBaseOfT.net.cs">
+			<DependentUpon>RepositoryBaseOfT.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Net7)'=='true'">
+		<Compile Remove="*.net*.cs" />
+		<Compile Remove="*.std*.cs" />
+		<Compile Include="RepositoryBaseOfT.net.cs">
+			<DependentUpon>RepositoryBaseOfT.cs</DependentUpon>
+		</Compile>
+		<Compile Include="RepositoryBaseOfT.net7.cs">
+			<DependentUpon>RepositoryBaseOfT.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Std21)'=='true'">
+		<Compile Remove="*.net*.cs" />
+		<Compile Remove="*.std*.cs" />
+		<Compile Include="RepositoryBaseOfT.cs" />
+		<Compile Include="RepositoryBaseOfT.std21.cs">
+			<DependentUpon>RepositoryBaseOfT.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="LanguageExt.Core" Version="4.4.3" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0' Or '$(TargetFramework)' == 'netstandard2.1'">
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.17" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.17" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.16" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.16" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Extensions\LanguageExt\Rafsan.Extensions.LanguageExt.csproj" />
+	  <ProjectReference Include="..\..\Core\Repositories.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>Rafsan.DataAcccess.Repositories.Specifications.EntityFrameworkCore</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+</Project>

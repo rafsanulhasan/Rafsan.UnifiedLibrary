@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0;net7.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+		<RootNamespace>Rafsan.DataAccess.Repositories</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="LanguageExt.Core" Version="4.4.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="IReadRepository.*.cs" />
+		<Content Include="IReadRepository.*.cs">
+			<DependentUpon>IReadRepository.cs</DependentUpon>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Net7)'=='true'">
+		<Compile Include="IReadRepository.net7.cs">
+			<DependentUpon>IReadRepository.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Net6)'=='true'">
+		<Compile Include="IReadRepository.net6.cs">
+			<DependentUpon>IReadRepository.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Net5)'=='true'">
+		<Compile Include="IReadRepository.net5.cs">
+			<DependentUpon>IReadRepository.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Std21)'=='true'">
+		<Compile Include="IReadRepository.std21.cs">
+			<DependentUpon>IReadRepository.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Std20)'=='true'">
+		<Compile Include="IReadRepository.std20.cs">
+			<DependentUpon>IReadRepository.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+</Project>

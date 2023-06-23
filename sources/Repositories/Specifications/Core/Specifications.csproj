@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0;net7.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+		<RootNamespace>Rafsan.DataAccess.Repositories.Specifications</RootNamespace>
+		<AssemblyName>$(RootNamespace)</AssemblyName>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Abstractions\Specifications.Abstractions.csproj" />
+	</ItemGroup>
+
+</Project>

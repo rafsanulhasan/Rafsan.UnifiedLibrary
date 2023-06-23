@@ -1,0 +1,27 @@
+﻿using Ardalis.Specification.UnitTests.Fixture.Specs;
+
+using FluentAssertions;
+
+using Xunit;
+
+namespace Ardalis.Specification.UnitTests.BuilderTests
+{
+	public class SpecificationBuilderExtensions_SelectMany
+	{
+		[Fact]
+		public void SetsNothing_GivenNoSelectManyExpression()
+		{
+			var spec = new StoreProductNamesEmptySpec();
+
+			spec.SelectorMany.Should().BeNull();
+		}
+
+		[Fact]
+		public void SetsSelectorMany_GivenSelectManyExpression()
+		{
+			var spec = new StoreProductNamesSpec();
+
+			spec.SelectorMany.Should().NotBeNull();
+		}
+	}
+}

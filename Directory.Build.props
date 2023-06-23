@@ -1,0 +1,80 @@
+<Project>
+	<PropertyGroup>
+		<NetUnified Condition="'$(TargetFramework)'=='net5.0' Or '$(TargetFramework)'=='net6.0' Or '$(TargetFramework)'=='net7.0'">true</NetUnified>
+		<NetLTS Condition="'$(TargetFramework)'=='net6.0' Or '$(TargetFramework)'=='net7.0'">true</NetLTS>
+		<Net7 Condition="'$(TargetFramework)'=='net7.0'">true</Net7>
+		<Net6 Condition="'$(TargetFramework)'=='net6.0'">true</Net6>
+		<Net5 Condition="'$(TargetFramework)'=='net5.0'">true</Net5>
+		<Std Condition="'$(TargetFramework)'=='netstandard2.0' Or '$(TargetFramework)'=='netstandard2.1'">true</Std>
+		<Std20 Condition="'$(TargetFramework)'=='netstandard2.0'">true</Std20>
+		<Std21 Condition="'$(TargetFramework)'=='netstandard2.1'">true</Std21>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)'=='net7.0'">
+		<DefineConstants>$(DefineConstants);net;net7;net70</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)'=='net6.0'">
+		<DefineConstants>$(DefineConstants);net;net6;net60</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">
+		<DefineConstants>$(DefineConstants);net;netlts;net5;net50</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
+		<DefineConstants>$(DefineConstants);std;netstandard21;std21</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+		<DefineConstants>$(DefineConstants);std;netstandard20;std20</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="*.cs" />
+		<None Include="**\*.cs" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(NetUnified)'=='true'">
+		<Compile Include="*.net.cs" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Std)'=='true'">
+		<Compile Include="*.netstandard.cs" />
+		<Compile Include="*.std.cs" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(NetLTS)'=='true'">
+		<Compile Include="*.lts.cs" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='net7.0'">
+		<Compile Include="*.net7.cs" />
+		<Compile Include="*.net70.cs" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
+		<Compile Include="*.net6.cs" />
+		<Compile Include="*.net60.cs" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
+		<Compile Include="*.net5.cs" />
+		<Compile Include="*.net50.cs" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
+		<Compile Include="*.netstandard21.cs" />
+		<Compile Include="*.std21.cs" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+		<Compile Include="*.netstandard20.cs" />
+		<Compile Include="*.std20.cs" />
+	</ItemGroup>
+</Project>
