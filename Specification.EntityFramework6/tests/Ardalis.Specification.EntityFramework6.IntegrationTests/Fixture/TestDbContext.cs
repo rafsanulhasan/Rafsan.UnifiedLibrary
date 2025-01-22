@@ -1,18 +1,13 @@
-﻿using System;
-using System.Data.Common;
+﻿using Ardalis.Specification.UnitTests.Fixture.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Reflection;
-using Ardalis.Specification.UnitTests.Fixture.Entities;
 
-namespace Ardalis.Specification.EntityFramework6.IntegrationTests.Fixture
+namespace Ardalis.Specification.EntityFramework6.IntegrationTests.Fixture;
+
+public class TestDbContext : DbContext
 {
-  public class TestDbContext : DbContext
-  {
-    public TestDbContext(DbConnection connection) : base(connection, false)
+    public TestDbContext(string connectionString) : base(connectionString)
     {
-      Database.SetInitializer(new DbInitializer());
     }
 
     public virtual DbSet<Country> Countries { get; set; }
@@ -23,17 +18,12 @@ namespace Ardalis.Specification.EntityFramework6.IntegrationTests.Fixture
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
-      var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
-        .Where(type => !string.IsNullOrEmpty(type.Namespace))
-        .Where(type => type.BaseType != null && type.BaseType.IsGenericType
-             && type.BaseType.GetGenericTypeDefinition() == typeof(EntityTypeConfiguration<>));
-      foreach (var type in typesToRegister)
-      {
-        dynamic configurationInstance = Activator.CreateInstance(type);
-        modelBuilder.Configurations.Add(configurationInstance);
-      }
+        modelBuilder.Entity<Country>().Property(x => x.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+        modelBuilder.Entity<Company>().Property(x => x.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+        modelBuilder.Entity<Address>().Property(x => x.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+        modelBuilder.Entity<Product>().Property(x => x.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+        modelBuilder.Entity<Store>().Property(x => x.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-      base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Store>().HasOptional(x => x.Address).WithRequired(x => x!.Store!);
     }
-  }
 }

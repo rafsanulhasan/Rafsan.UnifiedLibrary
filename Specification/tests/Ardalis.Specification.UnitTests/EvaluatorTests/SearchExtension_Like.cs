@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
-using Xunit;
 
-namespace Ardalis.Specification.UnitTests.EvaluatorTests
+namespace Ardalis.Specification.UnitTests.EvaluatorTests;
+
+public class SearchExtension_Like
 {
-  public class SearchExtension_Like
-  {
     [Theory]
     [InlineData(true, "%", "")]
     [InlineData(true, "%", " ")]
@@ -78,11 +72,17 @@ namespace Ardalis.Specification.UnitTests.EvaluatorTests
     [InlineData(false, "_Stuff_.txt_", "1Stuff.txt4")]
     [InlineData(false, "_Stuff_.txt_", "1Stuff3.txt")]
     [InlineData(false, "_Stuff_.txt_", "Stuff3.txt4")]
+    [InlineData(true, "%ab%", "ab")]
+    [InlineData(true, "%ab%", "abb")]
+    [InlineData(true, "%ab%", "aaab")]
+    [InlineData(true, "%ab%", "aaaab")]
+    [InlineData(true, "%ab%", "aaaaab")]
+    [InlineData(true, "%ab%", "aab")]
     public void ReturnsExpectedResult_GivenPatternAndInput(bool expectedResult, string pattern, string input)
     {
-      var result = input.Like(pattern);
+        var result = input.Like(pattern);
 
-      result.Should().Be(expectedResult);
+        result.Should().Be(expectedResult);
     }
 
     [Theory]
@@ -90,9 +90,8 @@ namespace Ardalis.Specification.UnitTests.EvaluatorTests
     [InlineData("[]", "asd")]
     public void ShouldThrowInvalidSearchPattern_GivenInvalidPattern(string pattern, string input)
     {
-      Action action = () => input.Like(pattern);
+        Action action = () => input.Like(pattern);
 
-      action.Should().Throw<InvalidSearchPatternException>().WithMessage($"Invalid search pattern: {pattern}");
+        action.Should().Throw<InvalidSearchPatternException>().WithMessage($"Invalid search pattern: {pattern}");
     }
-  }
 }

@@ -1,182 +1,186 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Ardalis.Specification.EntityFrameworkCore
+namespace Ardalis.Specification.EntityFrameworkCore;
+
+/// <inheritdoc/>
+public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {
-  /// <inheritdoc/>
-  public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
-  {
-    private readonly DbContext dbContext;
-    private readonly ISpecificationEvaluator specificationEvaluator;
+    protected DbContext DbContext { get; set; }
+    protected ISpecificationEvaluator SpecificationEvaluator { get; set; }
 
     public RepositoryBase(DbContext dbContext)
-        : this(dbContext, SpecificationEvaluator.Default)
+        : this(dbContext, EntityFrameworkCore.SpecificationEvaluator.Default)
     {
     }
 
     /// <inheritdoc/>
     public RepositoryBase(DbContext dbContext, ISpecificationEvaluator specificationEvaluator)
     {
-      this.dbContext = dbContext;
-      this.specificationEvaluator = specificationEvaluator;
+        DbContext = dbContext;
+        SpecificationEvaluator = specificationEvaluator;
     }
 
     /// <inheritdoc/>
     public virtual async Task<T> AddAsync(T entity, CancellationToken cancellationToken = default)
     {
-      dbContext.Set<T>().Add(entity);
+        DbContext.Set<T>().Add(entity);
 
-      await SaveChangesAsync(cancellationToken);
+        await SaveChangesAsync(cancellationToken);
 
-      return entity;
+        return entity;
     }
 
     /// <inheritdoc/>
     public virtual async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
     {
-        dbContext.Set<T>().AddRange(entities);
+        DbContext.Set<T>().AddRange(entities);
 
         await SaveChangesAsync(cancellationToken);
 
         return entities;
     }
-    
+
     /// <inheritdoc/>
     public virtual async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
-      dbContext.Set<T>().Update(entity);
+        DbContext.Set<T>().Update(entity);
 
-      await SaveChangesAsync(cancellationToken);
+        await SaveChangesAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
     public virtual async Task UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
     {
-      dbContext.Set<T>().UpdateRange(entities);
+        DbContext.Set<T>().UpdateRange(entities);
 
-      await SaveChangesAsync(cancellationToken);
+        await SaveChangesAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
     public virtual async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
     {
-      dbContext.Set<T>().Remove(entity);
+        DbContext.Set<T>().Remove(entity);
 
-      await SaveChangesAsync(cancellationToken);
+        await SaveChangesAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
     public virtual async Task DeleteRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
     {
-      dbContext.Set<T>().RemoveRange(entities);
+        DbContext.Set<T>().RemoveRange(entities);
 
-      await SaveChangesAsync(cancellationToken);
+        await SaveChangesAsync(cancellationToken);
     }
-    
+
+    /// <inheritdoc/>
+    public virtual async Task DeleteRangeAsync(ISpecification<T> specification, CancellationToken cancellationToken = default)
+    {
+        var query = ApplySpecification(specification);
+        DbContext.Set<T>().RemoveRange(query);
+
+        await SaveChangesAsync(cancellationToken);
+    }
+
     /// <inheritdoc/>
     public virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-      return await dbContext.SaveChangesAsync(cancellationToken);
+        return await DbContext.SaveChangesAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
     public virtual async Task<T?> GetByIdAsync<TId>(TId id, CancellationToken cancellationToken = default) where TId : notnull
     {
-      return await dbContext.Set<T>().FindAsync(new object[] { id }, cancellationToken: cancellationToken);
+        return await DbContext.Set<T>().FindAsync(new object[] { id }, cancellationToken: cancellationToken);
     }
 
     /// <inheritdoc/>
-    [Obsolete]
+    [Obsolete("Use FirstOrDefaultAsync<T> or SingleOrDefaultAsync<T> instead. The SingleOrDefaultAsync<T> can be applied only to SingleResultSpecification<T> specifications.")]
     public virtual async Task<T?> GetBySpecAsync(ISpecification<T> specification, CancellationToken cancellationToken = default)
     {
-      return await ApplySpecification(specification).FirstOrDefaultAsync(cancellationToken);
+        return await ApplySpecification(specification).FirstOrDefaultAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
-    [Obsolete]
+    [Obsolete("Use FirstOrDefaultAsync<T> or SingleOrDefaultAsync<T> instead. The SingleOrDefaultAsync<T> can be applied only to SingleResultSpecification<T> specifications.")]
     public virtual async Task<TResult?> GetBySpecAsync<TResult>(ISpecification<T, TResult> specification, CancellationToken cancellationToken = default)
     {
-      return await ApplySpecification(specification).FirstOrDefaultAsync(cancellationToken);
+        return await ApplySpecification(specification).FirstOrDefaultAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
     public virtual async Task<T?> FirstOrDefaultAsync(ISpecification<T> specification, CancellationToken cancellationToken = default)
     {
-      return await ApplySpecification(specification).FirstOrDefaultAsync(cancellationToken);
+        return await ApplySpecification(specification).FirstOrDefaultAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
     public virtual async Task<TResult?> FirstOrDefaultAsync<TResult>(ISpecification<T, TResult> specification, CancellationToken cancellationToken = default)
     {
-      return await ApplySpecification(specification).FirstOrDefaultAsync(cancellationToken);
+        return await ApplySpecification(specification).FirstOrDefaultAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
     public virtual async Task<T?> SingleOrDefaultAsync(ISingleResultSpecification<T> specification, CancellationToken cancellationToken = default)
     {
-      return await ApplySpecification(specification).SingleOrDefaultAsync(cancellationToken);
+        return await ApplySpecification(specification).SingleOrDefaultAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
     public virtual async Task<TResult?> SingleOrDefaultAsync<TResult>(ISingleResultSpecification<T, TResult> specification, CancellationToken cancellationToken = default)
     {
-      return await ApplySpecification(specification).SingleOrDefaultAsync(cancellationToken);
+        return await ApplySpecification(specification).SingleOrDefaultAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
     public virtual async Task<List<T>> ListAsync(CancellationToken cancellationToken = default)
     {
-      return await dbContext.Set<T>().ToListAsync(cancellationToken);
+        return await DbContext.Set<T>().ToListAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
     public virtual async Task<List<T>> ListAsync(ISpecification<T> specification, CancellationToken cancellationToken = default)
     {
-      var queryResult = await ApplySpecification(specification).ToListAsync(cancellationToken);
+        var queryResult = await ApplySpecification(specification).ToListAsync(cancellationToken);
 
-      return specification.PostProcessingAction == null ? queryResult : specification.PostProcessingAction(queryResult).ToList();
+        return specification.PostProcessingAction == null ? queryResult : specification.PostProcessingAction(queryResult).ToList();
     }
 
     /// <inheritdoc/>
     public virtual async Task<List<TResult>> ListAsync<TResult>(ISpecification<T, TResult> specification, CancellationToken cancellationToken = default)
     {
-      var queryResult = await ApplySpecification(specification).ToListAsync(cancellationToken);
+        var queryResult = await ApplySpecification(specification).ToListAsync(cancellationToken);
 
-      return specification.PostProcessingAction == null ? queryResult : specification.PostProcessingAction(queryResult).ToList();
+        return specification.PostProcessingAction == null ? queryResult : specification.PostProcessingAction(queryResult).ToList();
     }
 
     /// <inheritdoc/>
     public virtual async Task<int> CountAsync(ISpecification<T> specification, CancellationToken cancellationToken = default)
     {
-      return await ApplySpecification(specification, true).CountAsync(cancellationToken);
+        return await ApplySpecification(specification, true).CountAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
     public virtual async Task<int> CountAsync(CancellationToken cancellationToken = default)
     {
-      return await dbContext.Set<T>().CountAsync(cancellationToken);
+        return await DbContext.Set<T>().CountAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
     public virtual async Task<bool> AnyAsync(ISpecification<T> specification, CancellationToken cancellationToken = default)
     {
-      return await ApplySpecification(specification, true).AnyAsync(cancellationToken);
+        return await ApplySpecification(specification, true).AnyAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
     public virtual async Task<bool> AnyAsync(CancellationToken cancellationToken = default)
     {
-      return await dbContext.Set<T>().AnyAsync(cancellationToken);
+        return await DbContext.Set<T>().AnyAsync(cancellationToken);
     }
 
     /// <inheritdoc/>
     public virtual IAsyncEnumerable<T> AsAsyncEnumerable(ISpecification<T> specification)
     {
-      return ApplySpecification(specification).AsAsyncEnumerable();
+        return ApplySpecification(specification).AsAsyncEnumerable();
     }
 
     /// <summary>
@@ -187,7 +191,7 @@ namespace Ardalis.Specification.EntityFrameworkCore
     /// <returns>The filtered entities as an <see cref="IQueryable{T}"/>.</returns>
     protected virtual IQueryable<T> ApplySpecification(ISpecification<T> specification, bool evaluateCriteriaOnly = false)
     {
-      return specificationEvaluator.GetQuery(dbContext.Set<T>().AsQueryable(), specification, evaluateCriteriaOnly);
+        return SpecificationEvaluator.GetQuery(DbContext.Set<T>().AsQueryable(), specification, evaluateCriteriaOnly);
     }
 
     /// <summary>
@@ -202,7 +206,6 @@ namespace Ardalis.Specification.EntityFrameworkCore
     /// <returns>The filtered projected entities as an <see cref="IQueryable{T}"/>.</returns>
     protected virtual IQueryable<TResult> ApplySpecification<TResult>(ISpecification<T, TResult> specification)
     {
-      return specificationEvaluator.GetQuery(dbContext.Set<T>().AsQueryable(), specification);
+        return SpecificationEvaluator.GetQuery(DbContext.Set<T>().AsQueryable(), specification);
     }
-  }
 }
